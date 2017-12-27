@@ -1,0 +1,4 @@
+node_modules/
+*.log
+hold.eslintrc
+launch.json
