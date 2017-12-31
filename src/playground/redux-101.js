@@ -59,7 +59,7 @@ const countReducer = (state = { count: 0 }, action) => {
 // this implictly calls createStore with the Action as the 2nd argument.
 // There is no constructor function to set up the default, so set you state props with default values.
 // This method returns the updated store object to be used in your application.
-// Note:  we now refactored the logic by pulling out the logic for this create store method into a countReducer variable that can not be
+// Note:  we now refactored the logic by pulling out the logic for this create store method into a countReducer variable that can now be
 // passed into this create store:
 const store = createStore(countReducer);
 
