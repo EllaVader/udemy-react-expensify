@@ -45,9 +45,26 @@ const setTextFilter = (text = '') => ({
 });
 
 // 5. SORT_BY_DATE
+const sortByDate = () => ({
+  type: 'SORT_BY_DATE'
+});
+
 // 6. SORT_BY_AMOUNT
+const sortByAmount = () => ({
+  type: 'SORT_BY_AMOUNT'
+});
+
 // 7. SET_START_DATE
+const setStartDate = (startDate) => ({
+  type: 'SET_START_DATE',
+  startDate
+});
+
 // 8. SET_END_DATE
+const setEndDate = (endDate) => ({
+  type: 'SET_END_DATE',
+  endDate
+});
 
 // REDUCERS:
 // 1. Expenses Reducer
@@ -90,6 +107,26 @@ const filterReducer = (state = filterReducerDefaultState, action) => {
         ...state,
         text: action.text
       }
+    case 'SORT_BY_DATE':
+      return {
+        ...state,
+        sortBy: 'date'
+      }
+    case 'SORT_BY_AMOUNT':
+      return {
+        ...state,
+        sortBy: 'amount'
+      }
+    case 'SET_START_DATE':
+      return {
+        ...state,
+        startDate: action.startDate
+      }
+    case 'SET_END_DATE':
+      return {
+        ...state,
+        endDate: action.endDate
+      }
     default:
       return state;
   }
@@ -108,14 +145,22 @@ store.subscribe(() =>
   console.log(store.getState())
 );
 
-const expense1 = store.dispatch(addExpense({ description: 'rent', amount: 100 }));
-const expense2 = store.dispatch(addExpense({ description: 'Coffee', amount: 300 }));
+// const expense1 = store.dispatch(addExpense({ description: 'rent', amount: 100 }));
+// const expense2 = store.dispatch(addExpense({ description: 'Coffee', amount: 300 }));
 
-store.dispatch(removeExpense({id: expense1.expense.id}));
-store.dispatch(editExpense(expense2.expense.id, { amount: 500 }))
+// store.dispatch(removeExpense({id: expense1.expense.id}));
+// store.dispatch(editExpense(expense2.expense.id, { amount: 500 }))
 
-store.dispatch(setTextFilter('rent'));
-store.dispatch(setTextFilter());
+// store.dispatch(setTextFilter('rent'));
+// store.dispatch(setTextFilter());
+
+// store.dispatch(sortByAmount());
+// store.dispatch(sortByDate());
+
+store.dispatch(setStartDate(125));
+store.dispatch(setStartDate());
+store.dispatch(setEndDate(999));
+store.dispatch(setEndDate());
 
 // data we want to track state on
 const demoState = {
