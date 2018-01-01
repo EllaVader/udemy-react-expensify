@@ -32,7 +32,18 @@ const removeExpense = ({ id } = {}) => ({
 });
 
 // 3. EDIT_EXPENSE
+const editExpense = (id, updates) => ({
+  type: 'EDIT_EXPENSE',
+  id,
+  updates
+});
+
 // 4. SET_TEXT_FILTER
+const setTextFilter = (text = '') => ({
+  type: 'SET_TEXT_FILTER',
+  text
+});
+
 // 5. SORT_BY_DATE
 // 6. SORT_BY_AMOUNT
 // 7. SET_START_DATE
@@ -48,6 +59,18 @@ const expensesReducer = (state = expensesReducerDefaultState, action) => {
       return [...state, action.expense]
     case 'REMOVE_EXPENSE':
       return state.filter(({id}) => id !== action.id)
+    case 'EDIT_EXPENSE':
+      return state.map((expense) => {
+        if (expense.id === action.id){
+          // use object spread operator to take the original expense object, and then overlay the desired updates onto it
+          return {
+            ...expense,
+            ...action.updates
+          }
+        } else {
+          return expense;
+        }
+      })
     default:
       return state;
   }
@@ -62,6 +85,11 @@ const filterReducerDefaultState = {
 }
 const filterReducer = (state = filterReducerDefaultState, action) => {
   switch(action.type){
+    case 'SET_TEXT_FILTER':
+      return {
+        ...state,
+        text: action.text
+      }
     default:
       return state;
   }
@@ -84,7 +112,10 @@ const expense1 = store.dispatch(addExpense({ description: 'rent', amount: 100 })
 const expense2 = store.dispatch(addExpense({ description: 'Coffee', amount: 300 }));
 
 store.dispatch(removeExpense({id: expense1.expense.id}));
+store.dispatch(editExpense(expense2.expense.id, { amount: 500 }))
 
+store.dispatch(setTextFilter('rent'));
+store.dispatch(setTextFilter());
 
 // data we want to track state on
 const demoState = {
