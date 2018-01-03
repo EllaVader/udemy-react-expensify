@@ -8,7 +8,7 @@ const path = require('path');
 
 // module.exports a way to expose an object to another file via node
 module.exports = {
-  entry: './src/playground/hoc.js',
+  entry: './src/app.js',
   output: {
     path: path.join(__dirname, 'public'),
     filename: 'bundle.js'
