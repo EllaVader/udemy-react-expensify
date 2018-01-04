@@ -1,4 +1,6 @@
 import React from 'react';
+import { removeExpense } from '../actions/expenses';
+import { connect } from 'react-redux';
 
 // one way to do it 
 // const ExpenseListItem = (props) => (
@@ -10,12 +12,14 @@ import React from 'react';
 
 // another way to do it - we spread the expenses in the ExpenseList component
 // and we are destructuring them here in the argument list.
-const ExpenseListItem = ({description, amount, createdAt}) => (
+const ExpenseListItem = ({dispatch, id, description, amount, createdAt}) => (
   <div>
     <h3>{description}</h3>
     <p>{amount} - {createdAt}</p>
+    <button onClick={() => {
+       dispatch(removeExpense({id}));
+    }}>Remove</button>
   </div>
 );
 
-
-export default ExpenseListItem;
+export default connect()(ExpenseListItem);

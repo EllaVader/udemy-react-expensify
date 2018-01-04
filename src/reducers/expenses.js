@@ -1,5 +1,6 @@
 
-// Expenses Reducer
+// Expenses Reducer - defines how the state will change.  The logic to operate on the action and 
+// change the state is this reducer function.  It returns updated state.
 const expensesReducerDefaultState = [];
 
 export default (state = expensesReducerDefaultState, action) => {
