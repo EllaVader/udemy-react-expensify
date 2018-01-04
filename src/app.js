@@ -20,8 +20,6 @@ const state = store.getState();
 const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
 console.log(visibleExpenses);
 
-//store.dispatch(sortByAmount());
-
 // wire up the store with the provider.
 const jsx = (
   <Provider store={store}>
