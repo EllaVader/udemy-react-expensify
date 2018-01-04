@@ -1,4 +1,12 @@
 import React from 'react';
+import moment from 'moment';
+import { SingleDatePicker } from 'react-dates';
+import 'react-dates/initialize';import 'react-dates/lib/css/_datepicker.css';
+
+
+//const date = new Date();
+const now = moment();
+console.log(now.format('MMM Do, YYYY'));
 
 export default class ExpenseForm extends React.Component {
   // use local component state to track changes to user inputs.
@@ -6,7 +14,9 @@ export default class ExpenseForm extends React.Component {
   state = {
     description: '',
     note: '',
-    amount: ''
+    amount: '',
+    createdAt: moment(),
+    calendarFocused: false
   }
   onDescriptionChange = (e) => {
     const description = e.target.value;
@@ -26,12 +36,28 @@ export default class ExpenseForm extends React.Component {
     }
   }
 
+  onDateChanged = (createdAt) => {
+    this.setState(() => ({createdAt}));
+  }
+
+  onFocusChanged = ({focused}) => {
+    this.setState(() => ({calendarFocused: focused}))
+  }
+
   render(){
     return (
       <div>
         <form>
           <input type="text" placeholder="Description" autoFocus value={this.state.description} onChange={this.onDescriptionChange}/>
           <input type="text" placeholder="Amount" value={this.state.amount} onChange={this.onAmountChange}/>
+          <SingleDatePicker
+            date={this.state.createdAt}
+            onDateChange={this.onDateChanged}
+            focused={this.state.calendarFocused}
+            onFocusChange={this.onFocusChanged}
+            numberOfMonths={1}
+            isOutsideRange={() => false }
+          />
           <textarea value={this.state.note} onChange={this.onNoteChange} placeholder="Add a note for your expense (optional)"></textarea>
           <button>Add Expense</button>
         </form>
