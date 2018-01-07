@@ -9,16 +9,24 @@ const now = moment();
 console.log(now.format('MMM Do, YYYY'));
 
 export default class ExpenseForm extends React.Component {
-  // use local component state to track changes to user inputs.
-  // only when the user submits the form will we send them via redux
-  state = {
-    description: '',
-    note: '',
-    amount: '',
-    createdAt: moment(),
-    calendarFocused: false,
-    error: '',
+  // we need a constructor function here becuase we will want to
+  // set the expense state values if we are coming from EditExpensePage
+  constructor(props){
+    super(props);
+
+    // use local component state to track changes to user inputs.
+    // only when the user submits the form will we send them via redux
+    this.state = {
+      description: props.expense ? props.expense.description : '',
+      note: props.expense ? props.expense.note: '',
+      amount: props.expense ? (props.expense.amount / 100).toString() : '',
+      createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
+      calendarFocused: false,
+      error: '',
+      isEditing: props.expense ? true : false
+    }
   }
+
   onDescriptionChange = (e) => {
     const description = e.target.value;
     this.setState(() => ({description}));
@@ -86,7 +94,7 @@ export default class ExpenseForm extends React.Component {
             isOutsideRange={() => false }
           />
           <textarea value={this.state.note} onChange={this.onNoteChange} placeholder="Add a note for your expense (optional)"></textarea>
-          <button>Add Expense</button>
+          <button>{this.state.isEditing ? 'Update Expense' : 'Add Expense'}</button>
         </form>
       </div>
     )
