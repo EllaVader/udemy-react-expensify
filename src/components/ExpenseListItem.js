@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { removeExpense } from '../actions/expenses';
 import { connect } from 'react-redux';
 
@@ -14,7 +15,7 @@ import { connect } from 'react-redux';
 // and we are destructuring them here in the argument list.
 const ExpenseListItem = ({dispatch, id, description, amount, createdAt}) => (
   <div>
-    <h3>{description}</h3>
+    <h3><Link to={`/edit/${id}`}>{description}</Link></h3>
     <p>{amount} - {createdAt}</p>
     <button onClick={() => {
        dispatch(removeExpense({id}));
