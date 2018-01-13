@@ -5,15 +5,14 @@ import selectExpenses from '../selectors/expenses';
 
 // our regular unconnected component
 // pass in the props from the state that we connected to in the connect method below.
-const ExpenseList = (props) => (
+export const ExpenseList = (props) => (
   <div>
     <h1>Expense List</h1>
-    { props.expenses.map((expense) => { 
-      // one way to do it
-      //return <ExpenseListItem key={expense.id} expense={expense} />
-      // example using spread on an object
-      return <ExpenseListItem key={expense.id} {...expense} />
-    })}
+    { 
+      props.expenses.length === 0 ? ( <p>No expenses </p> ): (props.expenses.map((expense) => {
+        return <ExpenseListItem key={expense.id} {...expense} />
+      })) 
+    }
   </div>
 );
 
