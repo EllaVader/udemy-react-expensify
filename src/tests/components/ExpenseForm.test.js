@@ -2,6 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ExpenseForm from '../../components/ExpenseForm';
 import expenses from '../fixtures/expenses';
+import moment from 'moment';
+import {SingleDatePicker} from 'react-dates';
 
 // tests with empty form data and simple form data
 test('should render ExpenseForm correctly', () => {
@@ -64,4 +66,40 @@ test('should not set amount for invalid input', () => {
     target: { value }
   });
   expect(wrapper.state('amount')).toBe('');
+});
+
+test('should call onSubmit prop for valid form submissions', () => {
+  // create a jest spy - a fake (mock) function
+  const onSubmitSpy = jest.fn();
+  const wrapper = shallow(<ExpenseForm expense={expenses[2]} onSubmit={onSubmitSpy}/>);
+  
+  // simulate form submission
+  wrapper.find('form').simulate('submit', {
+    // passing in empty preventDefault method so e is not null
+    preventDefault: () => { }
+  });
+
+  // assert state
+  expect(wrapper.state('error')).toBe('');
+  expect(onSubmitSpy).toHaveBeenLastCalledWith({
+    description: expenses[2].description,
+    amount: expenses[2].amount,
+    note: expenses[2].note,
+    createdAt: expenses[2].createdAt
+  });
+});
+
+test('should set new date on date change', () => {
+  const now = moment();
+  const wrapper = shallow(<ExpenseForm />);
+  // find single date picker and then access some of the props on it.
+  wrapper.find(SingleDatePicker).prop('onDateChange')(now);
+  expect(wrapper.state('createdAt')).toEqual(now);
+});
+
+test('should set calendar focus on change', () => {
+  const focused = true;
+  const wrapper = shallow(<ExpenseForm />);
+  wrapper.find(SingleDatePicker).prop('onFocusChange')({ focused });
+  expect(wrapper.state('calendarFocused')).toBe(focused);
 });
