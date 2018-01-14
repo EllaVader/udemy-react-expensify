@@ -4,18 +4,30 @@ import { addExpense } from '../actions/expenses';
 import { connect } from 'react-redux';
 
 // we will connect this component to the store so it can add a new expense.
+export class AddExpensePage extends React.Component{
+  onSubmit = (expense) => {
+    this.props.onSubmit(expense);
+    //props.dispatch(addExpense(expense));
+    // using browser routing go to dashboard page
+    this.props.history.push('/');
+  };
 
-const AddExpensePage = (props) => (
-  <div>
-    <h1>Add Expense</h1>
-    <ExpenseForm 
-      onSubmit={(expense) => {
-        props.dispatch(addExpense(expense));
-        // using browser routing go to dashboard page
-        props.history.push('/');
-      }}
-      />
-  </div>
-);
+  render() {
+    return (
+      <div>
+        <h1>Add Expense</h1>
+        <ExpenseForm
+          onSubmit={this.onSubmit}
+        />
+      </div>
+    );
+  }
+}
 
-export default connect()(AddExpensePage);
+// takes dispatch as an argument
+const mapDispatchToProps = (dispatch) => ({
+  // returns an object where you define various props.
+    onSubmit: (expense) => dispatch(addExpense(expense))
+});
+
+export default connect(undefined, mapDispatchToProps)(AddExpensePage);
