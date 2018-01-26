@@ -3,35 +3,40 @@ import { connect } from 'react-redux';
 import { editExpense, removeExpense } from '../actions/expenses';
 import ExpenseForm from './ExpenseForm';
 
+export class EditExpensePage extends React.Component{
 
-const EditExpensePage = (props) => {
-  // props.match.params -- this is a special property on the Route object called "match" when we user Route.
-  // id was passed in as one of the parameters for this page Route path="/edit/:id"  we can access
-  // it via the props.match
-  return (
-    <div>
-      <ExpenseForm
-        expense={props.expense} 
-        onSubmit={(expense) => {
-          props.dispatch(editExpense(props.expense.id, expense));
-          // using browser routing go to dashboard page. we have access to this history prop and it has a push method on it to go to a different page.
-          props.history.push('/');
-          console.log('updated', expense);
-        }}
-      />
-      <button onClick={() => {
-        props.dispatch(removeExpense({ id: props.expense.id }));
-        props.history.push('/');
-      }}>Remove</button>
-  </div>
-  );
+  onSubmit = (expense) => {
+    this.props.editExpense(this.props.expense.id, expense);
+    // using browser routing go to dashboard page. we have access to this history prop and it has a push method on it to go to a different page.
+    this.props.history.push('/');
+  };
+
+  onRemove = () => {
+    this.props.removeExpense({ id: this.props.expense.id });
+    this.props.history.push('/');
+  };
+  
+  render(){
+    return (
+      <div>
+        <ExpenseForm
+          expense={this.props.expense}
+          onSubmit={this.onSubmit}
+        />
+        <button onClick={this.onRemove}>Remove</button>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = (state, props) => {
-  // return an object that contains the things we want to access from the store
-  return {
-    expense: state.expenses.find((expense) => expense.id === props.match.params.id)
-  }
-};
+// return an object that contains the things we want to access from the store
+const mapStateToProps = (state, props) => ({
+  expense: state.expenses.find((expense) => expense.id === props.match.params.id)
+});
 
-export default connect(mapStateToProps)(EditExpensePage);
+const mapDispatchToProps = (dispatch, props) => ({
+  editExpense: (id, expense) => dispatch(editExpense(id, expense)),
+  removeExpense: (data) => dispatch(removeExpense(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditExpensePage);

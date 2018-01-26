@@ -1,7 +1,8 @@
 import { createStore, combineReducers } from 'redux';
 import uuid from 'uuid';
 
-//  ACTION GENERATORS:
+//  ACTION GENERATORS: - define the action type and pass in the data 
+// to use for the to change the state
 // 1. ADD_EXPENSE
 // remember: Action generators take in a function that is called when the dispatch is 
 // made to set the values of the action object.
@@ -66,8 +67,9 @@ const setEndDate = (endDate) => ({
   endDate
 });
 
-// REDUCERS:
-// 1. Expenses Reducer
+// REDUCERS: - change the state based on the action argument
+// the action is the date we will change. 
+// 1. Expenses Reducer 
 const expensesReducerDefaultState = [];
 
 const expensesReducer = (state = expensesReducerDefaultState, action) => {
